@@ -37,7 +37,7 @@ sleep 2
 mkdir -p /var/lib/scrz-prem >/dev/null 2>&1
 echo "IP=" >> /var/lib/scrz-prem/ipvps.conf
 
-sudo at install squid -y
+sudo apt install squid -y
 sudo apt install net-tools -y
 sudo apt install vnstat -y
 wget -q https://raw.githubusercontent.com/imamekoc/VPN/main/tools.sh && chmod +x tools.sh && ./tools.sh
