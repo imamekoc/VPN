@@ -20,7 +20,7 @@ commonname=none
 email=agunxz@themoon.my,id
 
 # simple password minimal
-wget -O /etc/pam.d/common-password "http://sgpx.cybervpn.site:81/Autoscript-by-azi-main/Insshws/password.txt"
+wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/imamekoc/VPN/main/Insshws/password.txt"
 chmod +x /etc/pam.d/common-password
 
 # go to root
@@ -129,20 +129,20 @@ apt -y install nginx
 cd
 rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
-wget -O /etc/nginx/nginx.conf "http://sgpx.cybervpn.site:81/Autoscript-by-azi-main/configuration/nginx.conf"
+wget -O /etc/nginx/nginx.conf "https://raw.githubusercontent.com/essoojay/Autoscript-by-azi/main/configuration/nginx.conf"
 mkdir -p /home/vps/public_html
 /etc/init.d/nginx restart
 
 # install badvpn
 cd
 cd
-wget -O /usr/bin/badvpn-udpgw http://sgpx.cybervpn.site:81/Autoscript-by-azi-main/udpgw/badvpn-udpgw && chmod +x  /usr/bin/badvpn-udpgw
+wget -O /usr/bin/badvpn-udpgw https://raw.githubusercontent.com/essoojay/Autoscript-by-azi/main/udpgw/badvpn-udpgw && chmod +x  /usr/bin/badvpn-udpgw
 #system badvpn 7300
-wget -O /etc/systemd/system/svr-7300.service http://sgpx.cybervpn.site:81/Autoscript-by-azi-main/udpgw/svr-7300.service && chmod +x  /etc/systemd/system/svr-7300.service
+wget -O /etc/systemd/system/svr-7300.service https://raw.githubusercontent.com/essoojay/Autoscript-by-azi/main/udpgw/svr-7300.service && chmod +x  /etc/systemd/system/svr-7300.service
 #system badvpn 7200
-wget -O /etc/systemd/system/svr-7200.service http://sgpx.cybervpn.site:81/Autoscript-by-azi-main/udpgw/svr-7200.service && chmod +x  /etc/systemd/system/svr-7200.service
+wget -O /etc/systemd/system/svr-7200.service https://raw.githubusercontent.com/essoojay/Autoscript-by-azi/main/udpgw/svr-7200.service && chmod +x  /etc/systemd/system/svr-7200.service
 #system badvpn 7100
-wget -O /etc/systemd/system/svr-7100.service http://sgpx.cybervpn.site:81/Autoscript-by-azi-main/udpgw/svr-7100.service && chmod +x  /etc/systemd/system/svr-7100.service
+wget -O /etc/systemd/system/svr-7100.service https://raw.githubusercontent.com/essoojay/Autoscript-by-azi/main/udpgw/svr-7100.service && chmod +x  /etc/systemd/system/svr-7100.service
 
 #reboot system 7100
 systemctl daemon-reload

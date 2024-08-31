@@ -215,7 +215,7 @@ echo -e "Link none TLS    : ${vmesslink2}" | tee -a /root/akun/vmess/$user.txt
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /root/akun/vmess/$user.txt
 echo -e "Link GRPC        : ${vmesslink3}" | tee -a /root/akun/vmess/$user.txt
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /root/akun/vmess/$user.txt
-echo -e "Format OpenClash : https://${domain}:81/vmess-$user.txt" | tee -a /root/akun/vmess/$user.txt
+echo -e "Format OpenClash : https://${domain}:87/vmess-$user.txt" | tee -a /root/akun/vmess/$user.txt
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /root/akun/vmess/$user.txt
 echo -e "Expired On       : $exp" | tee -a /root/akun/vmess/$user.txt
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /root/akun/vmess/$user.txt

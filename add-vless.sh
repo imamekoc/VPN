@@ -156,7 +156,7 @@ echo -e "Link NTLS   : ${vlesslink2}" | tee -a /root/akun/vless/$user.txt
 echo -e "\033[1;93m───────────────────────────\033[0m" | tee -a /root/akun/vless/$user.txt
 echo -e "Link GRPC   : ${vlesslink3}" | tee -a /root/akun/vless/$user.txt
 echo -e "\033[1;93m───────────────────────────\033[0m" | tee -a /root/akun/vless/$user.txt
-echo -e "Format OpenClash : https://${domain}:81/vless-$user.txt" | tee -a /root/akun/vless/$user.txt
+echo -e "Format OpenClash : https://${domain}:87/vless-$user.txt" | tee -a /root/akun/vless/$user.txt
 echo -e "\033[1;93m───────────────────────────\033[0m" | tee -a /root/akun/vless/$user.txt
 echo -e "Expired On : $exp" | tee -a /root/akun/vless/$user.txt
 echo -e "\033[1;93m───────────────────────────\033[0m" | tee -a /root/akun/vless/$user.txt

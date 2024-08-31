@@ -318,7 +318,7 @@ echo -e "Link TLS   : ${shadowsockslink}" | tee -a /root/akun/shadowsocks/$user.
 echo -e "033[1;93m───────────────────────────\033[0m" | tee -a /root/akun/shadowsocks/$user.txt
 echo -e "Link gRPC  : ${shadowsockslink1}" | tee -a /root/akun/shadowsocks/$user.txt
 echo -e "033[1;93m───────────────────────────\033[0m" | tee -a /root/akun/shadowsocks/$user.txt
-echo -e "Link JSON  : https://${domain}:81/ss-$user.txt" | tee -a /root/akun/shadowsocks/$user.txt
+echo -e "Link JSON  : https://${domain}:87/ss-$user.txt" | tee -a /root/akun/shadowsocks/$user.txt
 echo -e "033[1;93m───────────────────────────\033[0m" | tee -a /root/akun/shadowsocks/$user.txt
 echo -e "Expired On : $exp" | tee -a /root/akun/shadowsocks/$user.txt
 echo -e "033[1;93m───────────────────────────\033[0m" | tee -a /root/akun/shadowsocks/$user.txt

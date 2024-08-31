@@ -128,7 +128,7 @@ echo -e "Link WS          : ${trojanlink}" | tee -a /root/akun/trojan/$user.txt
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /root/akun/trojan/$user.txt
 echo -e "Link GRPC        : ${trojanlink1}" | tee -a /root/akun/trojan/$user.txt
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /root/akun/trojan/$user.txt
-echo -e "Format OpenClash : https://${domain}:81/trojan-$user.txt" | tee -a /root/akun/trojan/$user.txt
+echo -e "Format OpenClash : https://${domain}:87/trojan-$user.txt" | tee -a /root/akun/trojan/$user.txt
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /root/akun/trojan/$user.txt
 echo -e "Expired On       : $exp" | tee -a /root/akun/trojan/$user.txt
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /root/akun/trojan/$user.txt

@@ -401,9 +401,9 @@ echo -e "Network : ws/grpc" | tee -a /etc/log-create-user.log
 echo -e "Path : /socks-ws" | tee -a /etc/log-create-user.log
 echo -e "ServiceName : socks-grpc" | tee -a /etc/log-create-user.log
 echo -e "----------------------------------" | tee -a /etc/log-create-user.log
-echo -e "Link  WS : http://${domain}:81/socksws-$user.txt" | tee -a /etc/log-create-user.log
+echo -e "Link  WS : http://${domain}:87/socksws-$user.txt" | tee -a /etc/log-create-user.log
 echo -e "----------------------------------" | tee -a /etc/log-create-user.log
-echo -e "Link  GRPC : http://${domain}:81/socksgrpc-$user.txt" | tee -a /etc/log-create-user.log
+echo -e "Link  GRPC : http://${domain}:87/socksgrpc-$user.txt" | tee -a /etc/log-create-user.log
 echo -e "----------------------------------" | tee -a /etc/log-create-user.log
 echo -e "Expired On : $exp" | tee -a /etc/log-create-user.log
 echo -e "----------------------------------" | tee -a /etc/log-create-user.log

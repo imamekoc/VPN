@@ -86,5 +86,5 @@ systemctl restart ohp
 echo ""
 echo -e "${GREEN}Done Installing OHP Server${NC}"
 echo -e "Port OVPN OHP TCP: $Port_OHP"
-echo -e "Link Download OVPN OHP: http://$MYIP:81/client-tcp-ohp1194.ovpn"
+echo -e "Link Download OVPN OHP: http://$MYIP:87/client-tcp-ohp1194.ovpn"
 echo -e "Script By Zenhost"

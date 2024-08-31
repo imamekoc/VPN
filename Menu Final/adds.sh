@@ -320,7 +320,7 @@ echo -e "Link TLS   : ${shadowsockslink}" | tee -a /root/akun/shadowsocks/$user.
 echo -e "$COLOR1─────────────────────────────────────────────────${NC}" | tee -a /root/akun/shadowsocks/$user.txt
 echo -e "Link gRPC  : ${shadowsockslink1}" | tee -a /root/akun/shadowsocks/$user.txt
 echo -e "$COLOR1─────────────────────────────────────────────────${NC}" | tee -a /root/akun/shadowsocks/$user.txt
-echo -e "Link JSON  : https://${domain}:81/ss-$user.txt" | tee -a /root/akun/shadowsocks/$user.txt
+echo -e "Link JSON  : https://${domain}:87/ss-$user.txt" | tee -a /root/akun/shadowsocks/$user.txt
 echo -e "$COLOR1─────────────────────────────────────────────────${NC}" | tee -a /root/akun/shadowsocks/$user.txt
 echo -e "" | tee -a /root/akun/shadowsocks/$user.txt
 read -n 1 -s -r -p "Press any key to back on menu"
