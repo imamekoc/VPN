@@ -5,8 +5,8 @@ MYIP=$(wget -qO- ipinfo.io/ip);
 clear
 apt install jq curl -y
 sub=$(</dev/urandom tr -dc a-z | head -c4)
-DOMAIN=vvip-kanghory.my.id
-SUB_DOMAIN=${sub}.vvip-kanghory.my.id
+DOMAIN=vvip-imamekoc.my.id
+SUB_DOMAIN=${sub}.vvip-imamekoc.my.id
 CF_ID=bukhorimukhammad@gmail.com
 CF_KEY=bd06fd9e8a01b73d24db51c4c6584d9133b3e
 set -euo pipefail

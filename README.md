@@ -1,6 +1,6 @@
 
 # SC By KANG HORY VPN versi Pertama Fix (SANTRI JOWO)
-![logo](https://raw.githubusercontent.com/kanghory/VPN/main/SS1.png)
+![logo](https://raw.githubusercontent.com/imamekoc/VPN/main/SS1.png)
 # Autoscript SSH & XRAY MULTIPORT 443 & 80
 
 ## For ubuntu 18.04 (minimal instalation) 
@@ -9,7 +9,7 @@
 ```
 * MULTIPORT
 ```
-![logo](https://raw.githubusercontent.com/kanghory/VPN/main/SS2.jpg)
+![logo](https://raw.githubusercontent.com/imamekoc/VPN/main/SS2.jpg)
 ## Step 1 update your vps frist
 ```
 wa.me/+6285225171738
@@ -41,7 +41,7 @@ wa.me/+6285225171738
 ✅ XRAY TROJAN TCP TLS 443<br>
 
 ## Order script: wa.me/+6285225171738
-##  t.me/kanghory<br> 
-## Testimoni     t.me/kanghoryvpnpremium<br>
+##  t.me/imamekoc<br> 
+## Testimoni     t.me/imamekocvpnpremium<br>
             
               
