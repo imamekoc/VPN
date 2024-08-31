@@ -5,7 +5,7 @@ cd
 apt install python -y
 
 #Install Script Websocket-SSH Python
-wget -O /usr/local/bin/edu-proxy https://raw.githubusercontent.com/imamekoc/websocket/main/openssh.py && chmod +x /usr/local/bin/edu-proxy
+#wget -O /usr/local/bin/edu-proxy https://raw.githubusercontent.com/imamekoc/websocket/main/openssh.py && chmod +x /usr/local/bin/edu-proxy
 
 wget -O /usr/local/bin/ws-dropbear https://raw.githubusercontent.com/imamekoc/VPN/main/Insshws/dropbear-ws.py.txt
 wget -O /usr/local/bin/ws-stunnel https://raw.githubusercontent.com/imamekoc/VPN/main/Insshws/ws-stunnel.txt
