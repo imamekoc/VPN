@@ -1,14 +1,12 @@
 #!/bin/bash
 # =========================================
-vlx=$(grep -c -E "^#& " "/etc/xray/config.json")
+# ⚡ Bolt: Optimized config parsing (4 reads -> 1 read)
+eval $(awk '/^#& / {vlx++} /^### / {vmc++} /^#! / {trx++} /^## / {ssx++} END {print "vlx="vlx+0; print "vmc="vmc+0; print "trx="trx+0; print "ssx="ssx+0}' "/etc/xray/config.json")
 let vla=$vlx/2
-vmc=$(grep -c -E "^### " "/etc/xray/config.json")
 let vma=$vmc/2
 ssh1="$(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd | wc -l)"
 
-trx=$(grep -c -E "^#! " "/etc/xray/config.json")
 let tra=$trx/2
-ssx=$(grep -c -E "^## " "/etc/xray/config.json")
 let ssa=$ssx/2
 COLOR1='\033[0;35m'
 COLOR2='\033[0;39m'
@@ -66,8 +64,12 @@ export Server_IP="underfined"
 export Script_Mode="Stable"
 export Auther=".geovpn"
 export MYIP=$( curl -s https://ipinfo.io/ip/ )
-Name=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $2}')
-Exp=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $3}')
+
+# ⚡ Bolt: Fetch permission file once (2 requests -> 1 request)
+PERMISSION_DATA=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin)
+CLIENT_INFO=$(echo "$PERMISSION_DATA" | grep $MYIP)
+Name=$(echo "$CLIENT_INFO" | awk '{print $2}')
+Exp=$(echo "$CLIENT_INFO" | awk '{print $3}')
 
 # // Root Checking
 if [ "${EUID}" -ne 0 ]; then
