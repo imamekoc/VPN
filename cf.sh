@@ -5,10 +5,27 @@ MYIP=$(wget -qO- ipinfo.io/ip);
 clear
 apt install jq curl -y
 sub=$(</dev/urandom tr -dc a-z | head -c4)
-DOMAIN=vvip-imamekoc.my.id
-SUB_DOMAIN=${sub}.vvip-imamekoc.my.id
-CF_ID=bukhorimukhammad@gmail.com
-CF_KEY=bd06fd9e8a01b73d24db51c4c6584d9133b3e
+
+# Security: Read from env or prompt
+if [ -z "${DOMAIN:-}" ]; then
+  read -p "Enter Cloudflare Zone (e.g. example.com): " DOMAIN
+fi
+
+SUB_DOMAIN=${sub}.${DOMAIN}
+
+if [ -z "${CF_ID:-}" ]; then
+  read -p "Enter Cloudflare Email: " CF_ID
+fi
+if [ -z "${CF_KEY:-}" ]; then
+  read -s -p "Enter Cloudflare Global API Key: " CF_KEY
+  echo ""
+fi
+
+if [[ -z "$CF_ID" || -z "$CF_KEY" || -z "$DOMAIN" ]]; then
+  echo "Error: Missing Cloudflare credentials or domain."
+  exit 1
+fi
+
 set -euo pipefail
 IP=$(curl -sS ifconfig.me);
 echo "Updating DNS for ${SUB_DOMAIN}..."
@@ -16,6 +33,11 @@ ZONE=$(curl -sLX GET "https://api.cloudflare.com/client/v4/zones?name=${DOMAIN}&
      -H "X-Auth-Email: ${CF_ID}" \
      -H "X-Auth-Key: ${CF_KEY}" \
      -H "Content-Type: application/json" | jq -r .result[0].id)
+
+if [[ "${ZONE}" == "null" || -z "${ZONE}" ]]; then
+    echo "Error: Could not find zone ${DOMAIN} in Cloudflare account."
+    exit 1
+fi
 
 RECORD=$(curl -sLX GET "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_records?name=${SUB_DOMAIN}" \
      -H "X-Auth-Email: ${CF_ID}" \
