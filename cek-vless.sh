@@ -31,35 +31,27 @@ echo -e "\033[1;93m────────────────────�
 echo -e "\e[42m      Vless User Login Account            \E[0m"
 echo -e "\033[1;93m─────────────────────────────────────────\033[0m"
 
+# ⚡ Bolt: Performance optimization
+# Read log file once into memory instead of reading it N * M times in nested loops.
+# Reduces disk I/O from O(N*M) to O(1).
+logfile=$(tail -n 500 /var/log/xray/access.log)
+
 for akun in "${data[@]}"; do
     if [[ -z "$akun" ]]; then
         akun="tidakada"
     fi
 
-    echo -n >/tmp/ipvless.txt
-    data2=($(cat /var/log/xray/access.log | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | sort | uniq))
-    for ip in "${data2[@]}"; do
+    # Filter lines for this user from the loaded log variable
+    jum=$(echo "$logfile" | grep -w "$akun" | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | sort | uniq)
 
-        jum=$(cat /var/log/xray/access.log | grep -w "$akun" | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | grep -w "$ip" | sort | uniq)
-        if [[ "$jum" = "$ip" ]]; then
-            echo "$jum" >>/tmp/ipvless.txt
-        else
-            echo "$ip" >>/tmp/other.txt
-        fi
-        jum2=$(cat /tmp/ipvless.txt)
-        sed -i "/$jum2/d" /tmp/other.txt >/dev/null 2>&1
-    done
-
-    jum=$(cat /tmp/ipvless.txt)
     if [[ -z "$jum" ]]; then
         echo >/dev/null
     else
-        jum2=$(cat /tmp/ipvless.txt | nl)
+        jum2=$(echo "$jum" | nl)
         echo "user : $akun"
         echo "$jum2"
         echo -e "\033[1;93m─────────────────────────────────────────\033[0m"
     fi
-    rm -rf /tmp/ipvless.txt
 done
 
 rm -rf /tmp/other.txt
