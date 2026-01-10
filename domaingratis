@@ -21,8 +21,21 @@ exit 1
 fi
 DOMAIN=andriwrt.me
 SUB_DOMAIN=${sub}.andriwrt.me
-CF_ID=razertech52@gmail.com
-CF_KEY=8b0683c1ff3f6eed8dc32a70dfd2c02c80e9f
+
+# Security Fix: Prompt for Cloudflare credentials if not set
+if [[ -z "${CF_ID:-}" ]]; then
+  read -p "Masukan Email Cloudflare: " CF_ID
+fi
+if [[ -z "${CF_KEY:-}" ]]; then
+  read -s -p "Masukan Global Token Cloudflare: " CF_KEY
+  echo ""
+fi
+
+if [[ -z "${CF_ID:-}" || -z "${CF_KEY:-}" ]]; then
+  echo "Error: Cloudflare credentials required."
+  exit 1
+fi
+
 set -euo pipefail
 IP=$(curl -sS ifconfig.me);
 echo "Updating DNS for ${SUB_DOMAIN}..."
