@@ -1,14 +1,16 @@
 #!/bin/bash
 # =========================================
-vlx=$(grep -c -E "^#& " "/etc/xray/config.json")
+# Optimization: Read config once
+CONFIG_CONTENT=$(cat /etc/xray/config.json 2>/dev/null)
+vlx=$(echo "$CONFIG_CONTENT" | grep -c -E "^#& ")
 let vla=$vlx/2
-vmc=$(grep -c -E "^### " "/etc/xray/config.json")
+vmc=$(echo "$CONFIG_CONTENT" | grep -c -E "^### ")
 let vma=$vmc/2
 ssh1="$(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd | wc -l)"
 
-trx=$(grep -c -E "^#! " "/etc/xray/config.json")
+trx=$(echo "$CONFIG_CONTENT" | grep -c -E "^#! ")
 let tra=$trx/2
-ssx=$(grep -c -E "^## " "/etc/xray/config.json")
+ssx=$(echo "$CONFIG_CONTENT" | grep -c -E "^## ")
 let ssa=$ssx/2
 COLOR1='\033[0;35m'
 COLOR2='\033[0;39m'
@@ -65,18 +67,22 @@ export Server_Port="443"
 export Server_IP="underfined"
 export Script_Mode="Stable"
 export Auther=".geovpn"
+# Optimization: Fetch IP and permission data once
 export MYIP=$( curl -s https://ipinfo.io/ip/ )
-Name=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $2}')
-Exp=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $3}')
+if [[ -z "$MYIP" ]]; then
+    export MYIP=$(curl -sS ipv4.icanhazip.com)
+fi
+export IP="$MYIP"
+
+IZIN_DATA=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin)
+Name=$(echo "$IZIN_DATA" | grep $MYIP | awk '{print $2}')
+Exp=$(echo "$IZIN_DATA" | grep $MYIP | awk '{print $3}')
 
 # // Root Checking
 if [ "${EUID}" -ne 0 ]; then
 		echo -e "${EROR} Please Run This Script As Root User !"
 		exit 1
 fi
-
-# // Exporting IP Address
-export IP=$( curl -sS ipv4.icanhazip.com )
 
 # TOTAL RAM
 total_ram=` grep "MemTotal: " /proc/meminfo | awk '{ print $2}'`
@@ -163,7 +169,7 @@ echo ""
 read -n 1 -s -r -p "Press any key to back on menu"
 menu
 }
-IPVPS=$(curl -sS ipv4.icanhazip.com )
+IPVPS="$MYIP"
 ISPVPS=$( curl -s ipinfo.io/org )
 ttoday="$(vnstat | grep today | awk '{print $8" "substr ($9, 1, 3)}' | head -1)"
 tmon="$(vnstat -m | grep `date +%G-%m` | awk '{print $8" "substr ($9, 1 ,3)}' | head -1)"
