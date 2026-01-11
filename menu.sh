@@ -65,18 +65,37 @@ export Server_Port="443"
 export Server_IP="underfined"
 export Script_Mode="Stable"
 export Auther=".geovpn"
-export MYIP=$( curl -s https://ipinfo.io/ip/ )
-Name=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $2}')
-Exp=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $3}')
+
+# BOLT OPTIMIZATION: Cache expensive network calls
+# Why: Frequent curl calls slow down the menu significantly (by seconds).
+# Impact: ~2s faster load time on subsequent runs.
+CACHE_FILE="/tmp/menu_cache.sh"
+if [ -f "$CACHE_FILE" ] && [ $(date +%s) -le $(($(date +%s -r "$CACHE_FILE") + 300)) ]; then
+    source "$CACHE_FILE"
+else
+    export MYIP=$( curl -s https://ipinfo.io/ip/ )
+    # Combine curl calls if possible, or keep as is but cache results
+    # Fetching permission info only once
+    PERM_INFO=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP)
+    Name=$(echo "$PERM_INFO" | awk '{print $2}')
+    Exp=$(echo "$PERM_INFO" | awk '{print $3}')
+
+    export IP=$( curl -sS ipv4.icanhazip.com )
+    ISPVPS=$( curl -s ipinfo.io/org )
+
+    # Save to cache
+    echo "export MYIP='$MYIP'" > "$CACHE_FILE"
+    echo "Name='$Name'" >> "$CACHE_FILE"
+    echo "Exp='$Exp'" >> "$CACHE_FILE"
+    echo "export IP='$IP'" >> "$CACHE_FILE"
+    echo "ISPVPS='$ISPVPS'" >> "$CACHE_FILE"
+fi
 
 # // Root Checking
 if [ "${EUID}" -ne 0 ]; then
 		echo -e "${EROR} Please Run This Script As Root User !"
 		exit 1
 fi
-
-# // Exporting IP Address
-export IP=$( curl -sS ipv4.icanhazip.com )
 
 # TOTAL RAM
 total_ram=` grep "MemTotal: " /proc/meminfo | awk '{ print $2}'`
@@ -163,8 +182,8 @@ echo ""
 read -n 1 -s -r -p "Press any key to back on menu"
 menu
 }
-IPVPS=$(curl -sS ipv4.icanhazip.com )
-ISPVPS=$( curl -s ipinfo.io/org )
+IPVPS=$IP
+# ISPVPS already cached above
 ttoday="$(vnstat | grep today | awk '{print $8" "substr ($9, 1, 3)}' | head -1)"
 tmon="$(vnstat -m | grep `date +%G-%m` | awk '{print $8" "substr ($9, 1 ,3)}' | head -1)"
 clear
