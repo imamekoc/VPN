@@ -2,7 +2,7 @@ domain=$(cat /etc/xray/domain)
 LocalVersion=$(cat /root/versi)
 IPVPS=$(curl -s ipinfo.io/ip )
 ISPVPS=$( curl -s ipinfo.io/org )
-token="6226368145:AAGaFLgpYKcH7JppfHptqyWowndyO_IENEU"
+token="${TELEGRAM_BOT_TOKEN:-}"
 chatid=$(cat /root/id)
 if [ -n "$SSH_CLIENT" ] && [ -z "$TMUX" ]; then
 
