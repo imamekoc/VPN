@@ -1,5 +1,4 @@
-USERID="5764457448"
-KEY="6226368145:AAGaFLgpYKcH7JppfHptqyWowndyO_IENEU"
+USERID="${TELEGRAM_USER_ID:-}"
+KEY="${TELEGRAM_BOT_TOKEN:-}"
 TIMEOUT="10"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
-
