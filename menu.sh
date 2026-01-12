@@ -65,9 +65,6 @@ export Server_Port="443"
 export Server_IP="underfined"
 export Script_Mode="Stable"
 export Auther=".geovpn"
-export MYIP=$( curl -s https://ipinfo.io/ip/ )
-Name=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $2}')
-Exp=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $3}')
 
 # // Root Checking
 if [ "${EUID}" -ne 0 ]; then
@@ -75,8 +72,41 @@ if [ "${EUID}" -ne 0 ]; then
 		exit 1
 fi
 
+# ⚡ Bolt Optimization: Cache expensive network calls to reduce load time
+# Cache is stored in /etc/xray which is secured for root usage
+BOLT_CACHE="/etc/xray/bolt_menu_cache"
+# Check if cache exists and is less than 60 minutes old
+if [ -f "$BOLT_CACHE" ] && [ $(find "$BOLT_CACHE" -mmin -60 2>/dev/null | wc -l) -gt 0 ]; then
+    source "$BOLT_CACHE"
+else
+    export MYIP=$(curl -sS ipv4.icanhazip.com)
+    # Fallback to ipinfo if icanhazip fails
+    if [[ -z "$MYIP" ]]; then
+        export MYIP=$(curl -s https://ipinfo.io/ip/)
+    fi
+
+    export IP="$MYIP"
+    IPVPS="$MYIP"
+    ISPVPS=$(curl -s ipinfo.io/org)
+
+    IZIN_DATA=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin)
+    Name=$(echo "$IZIN_DATA" | grep "$MYIP" | awk '{print $2}')
+    Exp=$(echo "$IZIN_DATA" | grep "$MYIP" | awk '{print $3}')
+
+    # Ensure /etc/xray exists
+    mkdir -p /etc/xray
+    cat <<EOF > "$BOLT_CACHE"
+export MYIP="$MYIP"
+export IP="$IP"
+IPVPS="$IPVPS"
+ISPVPS="$ISPVPS"
+Name="$Name"
+Exp="$Exp"
+EOF
+fi
+
 # // Exporting IP Address
-export IP=$( curl -sS ipv4.icanhazip.com )
+# IP is already exported in the Bolt cache block above
 
 # TOTAL RAM
 total_ram=` grep "MemTotal: " /proc/meminfo | awk '{ print $2}'`
@@ -163,8 +193,7 @@ echo ""
 read -n 1 -s -r -p "Press any key to back on menu"
 menu
 }
-IPVPS=$(curl -sS ipv4.icanhazip.com )
-ISPVPS=$( curl -s ipinfo.io/org )
+# IPVPS and ISPVPS are already defined in the Bolt cache block above
 ttoday="$(vnstat | grep today | awk '{print $8" "substr ($9, 1, 3)}' | head -1)"
 tmon="$(vnstat -m | grep `date +%G-%m` | awk '{print $8" "substr ($9, 1 ,3)}' | head -1)"
 clear
