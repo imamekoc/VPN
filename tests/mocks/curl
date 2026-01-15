@@ -1,0 +1,16 @@
+#!/bin/bash
+echo "$@" >> tests/curl_log.txt
+
+# Simple routing based on arguments
+if [[ "$*" == *"ipinfo.io/ip"* ]]; then
+    echo "203.0.113.1"
+elif [[ "$*" == *"ipv4.icanhazip.com"* ]]; then
+    echo "203.0.113.1"
+elif [[ "$*" == *"ipinfo.io/org"* ]]; then
+    echo "AS12345 Example ISP"
+elif [[ "$*" == *"izin"* ]]; then
+    echo "203.0.113.1 User1 2025-01-01"
+    echo "198.51.100.1 User2 2025-02-01"
+else
+    echo "Mocked Response"
+fi
