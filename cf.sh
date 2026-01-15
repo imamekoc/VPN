@@ -5,10 +5,31 @@ MYIP=$(wget -qO- ipinfo.io/ip);
 clear
 apt install jq curl -y
 sub=$(</dev/urandom tr -dc a-z | head -c4)
-DOMAIN=vvip-imamekoc.my.id
-SUB_DOMAIN=${sub}.vvip-imamekoc.my.id
-CF_ID=bukhorimukhammad@gmail.com
-CF_KEY=bd06fd9e8a01b73d24db51c4c6584d9133b3e
+# Use env vars if set, otherwise prompt (or fail if non-interactive)
+if [ -z "${DOMAIN:-}" ]; then
+  read -p "Enter Domain (DOMAIN): " DOMAIN
+fi
+
+if [ -z "$DOMAIN" ]; then
+    echo "Error: DOMAIN is required."
+    exit 1
+fi
+
+SUB_DOMAIN=${sub}.${DOMAIN}
+
+if [ -z "${CF_ID:-}" ]; then
+  read -p "Enter Cloudflare Email (CF_ID): " CF_ID
+fi
+
+if [ -z "${CF_KEY:-}" ]; then
+  read -s -p "Enter Cloudflare API Key (CF_KEY): " CF_KEY
+  echo ""
+fi
+
+if [ -z "$CF_ID" ] || [ -z "$CF_KEY" ]; then
+  echo "Error: Cloudflare credentials (CF_ID, CF_KEY) are required."
+  exit 1
+fi
 set -euo pipefail
 IP=$(curl -sS ifconfig.me);
 echo "Updating DNS for ${SUB_DOMAIN}..."

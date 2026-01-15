@@ -19,10 +19,30 @@ clear
 echo -e "${EROR} No Input Detected !"
 exit 1
 fi
-DOMAIN=andriwrt.me
-SUB_DOMAIN=${sub}.andriwrt.me
-CF_ID=razertech52@gmail.com
-CF_KEY=8b0683c1ff3f6eed8dc32a70dfd2c02c80e9f
+
+if [ -z "${DOMAIN:-}" ]; then
+  # Fallback to prompt if not set
+  # DOMAIN="andriwrt.me" # REMOVED HARDCODED DEFAULT
+  read -p "Input Domain (DOMAIN) [default: andriwrt.me]: " input_domain
+  DOMAIN=${input_domain:-andriwrt.me}
+fi
+
+SUB_DOMAIN=${sub}.${DOMAIN}
+
+if [ -z "${CF_ID:-}" ]; then
+  read -p "Enter Cloudflare Email (CF_ID): " CF_ID
+fi
+
+if [ -z "${CF_KEY:-}" ]; then
+  read -s -p "Enter Cloudflare API Key (CF_KEY): " CF_KEY
+  echo ""
+fi
+
+if [ -z "$CF_ID" ] || [ -z "$CF_KEY" ]; then
+  echo "Error: Cloudflare credentials (CF_ID, CF_KEY) are required."
+  exit 1
+fi
+
 set -euo pipefail
 IP=$(curl -sS ifconfig.me);
 echo "Updating DNS for ${SUB_DOMAIN}..."
