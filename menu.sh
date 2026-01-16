@@ -65,9 +65,6 @@ export Server_Port="443"
 export Server_IP="underfined"
 export Script_Mode="Stable"
 export Auther=".geovpn"
-export MYIP=$( curl -s https://ipinfo.io/ip/ )
-Name=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $2}')
-Exp=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $3}')
 
 # // Root Checking
 if [ "${EUID}" -ne 0 ]; then
@@ -75,8 +72,31 @@ if [ "${EUID}" -ne 0 ]; then
 		exit 1
 fi
 
+# // Bolt Optimization: Cache IP and Auth to reduce load time
+CACHE_DIR="/var/lib/scrz-prem"
+[ ! -d "$CACHE_DIR" ] && mkdir -p "$CACHE_DIR"
+
+if [ -f "${CACHE_DIR}/public_ip" ]; then
+    export MYIP=$(cat "${CACHE_DIR}/public_ip")
+else
+    export MYIP=$(curl -s https://ipinfo.io/ip/)
+    # Only cache if we got a result
+    if [ -n "$MYIP" ]; then
+        echo "$MYIP" > "${CACHE_DIR}/public_ip"
+    fi
+fi
+
+# Fetch auth file once
+IZIN_TEMP=$(mktemp)
+# If curl fails, create empty file to avoid grep errors
+curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin > "$IZIN_TEMP" || touch "$IZIN_TEMP"
+Name=$(grep -F "$MYIP" "$IZIN_TEMP" | awk '{print $2}')
+Exp=$(grep -F "$MYIP" "$IZIN_TEMP" | awk '{print $3}')
+rm -f "$IZIN_TEMP"
+
 # // Exporting IP Address
-export IP=$( curl -sS ipv4.icanhazip.com )
+# Use cached IP
+export IP="$MYIP"
 
 # TOTAL RAM
 total_ram=` grep "MemTotal: " /proc/meminfo | awk '{ print $2}'`
@@ -163,8 +183,15 @@ echo ""
 read -n 1 -s -r -p "Press any key to back on menu"
 menu
 }
-IPVPS=$(curl -sS ipv4.icanhazip.com )
-ISPVPS=$( curl -s ipinfo.io/org )
+IPVPS="$MYIP"
+if [ -f "${CACHE_DIR}/isp" ]; then
+    ISPVPS=$(cat "${CACHE_DIR}/isp")
+else
+    ISPVPS=$(curl -s ipinfo.io/org)
+    if [ -n "$ISPVPS" ]; then
+        echo "$ISPVPS" > "${CACHE_DIR}/isp"
+    fi
+fi
 ttoday="$(vnstat | grep today | awk '{print $8" "substr ($9, 1, 3)}' | head -1)"
 tmon="$(vnstat -m | grep `date +%G-%m` | awk '{print $8" "substr ($9, 1 ,3)}' | head -1)"
 clear
