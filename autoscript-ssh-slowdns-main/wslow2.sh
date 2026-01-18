@@ -84,7 +84,7 @@ function get_core_dns() {
       Credit_Potato
     fi
   fi
-  chmod 777 /usr/sbin/dns-server
+  chmod 755 /usr/sbin/dns-server
 }
 
 function input_nameserver() {
