@@ -15,11 +15,11 @@ wget -q -O /usr/bin/menu-ssh "https://raw.githubusercontent.com/Azigaming404/Aut
 wget -q -O /usr/bin/trial "https://raw.githubusercontent.com/Azigaming404/Autoscript-by-azi/main/trial/trial.sh"
 echo "*/3 * * * * root bot" >> /etc/crontab
 #izin
-chmod 777 /usr/bin/usernew
-chmod 777 /usr/bin/menu
-chmod 777 /usr/bin/setting
-chmod 777 /usr/bin/autokill
-chmod 777 /usr/bin/menu-ssh
-chmod 777 /usr/bin/trial
+chmod 755 /usr/bin/usernew
+chmod 755 /usr/bin/menu
+chmod 755 /usr/bin/setting
+chmod 755 /usr/bin/autokill
+chmod 755 /usr/bin/menu-ssh
+chmod 755 /usr/bin/trial
 rm -rf updateyes.sh
 menu
