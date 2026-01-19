@@ -65,9 +65,15 @@ export Server_Port="443"
 export Server_IP="underfined"
 export Script_Mode="Stable"
 export Auther=".geovpn"
-export MYIP=$( curl -s https://ipinfo.io/ip/ )
-Name=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $2}')
-Exp=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $3}')
+
+# // Optimize: Fetch IP once and reuse
+export MYIP=$( curl -sS ipv4.icanhazip.com )
+export IP=$MYIP
+
+# // Optimize: Fetch permissions file once
+IZIN_DATA=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin)
+Name=$(echo "$IZIN_DATA" | grep $MYIP | awk '{print $2}')
+Exp=$(echo "$IZIN_DATA" | grep $MYIP | awk '{print $3}')
 
 # // Root Checking
 if [ "${EUID}" -ne 0 ]; then
@@ -76,7 +82,7 @@ if [ "${EUID}" -ne 0 ]; then
 fi
 
 # // Exporting IP Address
-export IP=$( curl -sS ipv4.icanhazip.com )
+# IP already exported above
 
 # TOTAL RAM
 total_ram=` grep "MemTotal: " /proc/meminfo | awk '{ print $2}'`
