@@ -1,0 +1,3 @@
+## 2024-05-23 - Redundant Network Calls in Shell Scripts
+**Learning:** Legacy shell scripts in this codebase frequently make redundant `curl` calls for the same static data (IP address, permission files) within the same execution flow. This significantly increases latency and fail-points.
+**Action:** When optimizing shell scripts, look for repeated `curl` calls. Store the result in a variable (e.g., `RESPONSE=$(curl ...)`) or a temporary file if parsing logic is complex, and reuse it. Always verify variables are populated before usage to prevent empty string logic bugs.
