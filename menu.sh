@@ -65,9 +65,24 @@ export Server_Port="443"
 export Server_IP="underfined"
 export Script_Mode="Stable"
 export Auther=".geovpn"
-export MYIP=$( curl -s https://ipinfo.io/ip/ )
-Name=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $2}')
-Exp=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin | grep $MYIP | awk '{print $3}')
+# Optimization: Cache IP and Authorization to reduce network calls
+if [[ -z "$MYIP" ]]; then
+    export MYIP=$( curl -s https://ipinfo.io/ip/ )
+fi
+
+if [[ -z "$IP" ]]; then
+    export IP="$MYIP"
+fi
+
+if [[ -z "$IPVPS" ]]; then
+    export IPVPS="$MYIP"
+fi
+
+if [[ -z "$Name" || -z "$Exp" ]]; then
+    IZIN=$(curl -sS https://raw.githubusercontent.com/imamekoc/VPN/main/izin)
+    export Name=$(echo "$IZIN" | grep $MYIP | awk '{print $2}')
+    export Exp=$(echo "$IZIN" | grep $MYIP | awk '{print $3}')
+fi
 
 # // Root Checking
 if [ "${EUID}" -ne 0 ]; then
@@ -76,7 +91,7 @@ if [ "${EUID}" -ne 0 ]; then
 fi
 
 # // Exporting IP Address
-export IP=$( curl -sS ipv4.icanhazip.com )
+# export IP=$( curl -sS ipv4.icanhazip.com ) # Handled above
 
 # TOTAL RAM
 total_ram=` grep "MemTotal: " /proc/meminfo | awk '{ print $2}'`
@@ -163,8 +178,10 @@ echo ""
 read -n 1 -s -r -p "Press any key to back on menu"
 menu
 }
-IPVPS=$(curl -sS ipv4.icanhazip.com )
-ISPVPS=$( curl -s ipinfo.io/org )
+# IPVPS is handled at the top
+if [[ -z "$ISPVPS" ]]; then
+    export ISPVPS=$( curl -s ipinfo.io/org )
+fi
 ttoday="$(vnstat | grep today | awk '{print $8" "substr ($9, 1, 3)}' | head -1)"
 tmon="$(vnstat -m | grep `date +%G-%m` | awk '{print $8" "substr ($9, 1 ,3)}' | head -1)"
 clear
