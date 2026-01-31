@@ -7,8 +7,16 @@ apt install jq curl -y
 sub=$(</dev/urandom tr -dc a-z | head -c4)
 DOMAIN=vvip-imamekoc.my.id
 SUB_DOMAIN=${sub}.vvip-imamekoc.my.id
-CF_ID=bukhorimukhammad@gmail.com
-CF_KEY=bd06fd9e8a01b73d24db51c4c6584d9133b3e
+
+# Check for environment variables, otherwise prompt
+if [[ -z "${CF_ID:-}" ]]; then
+     read -rp "Input Cloudflare Email: " CF_ID
+fi
+if [[ -z "${CF_KEY:-}" ]]; then
+     read -rsp "Input Cloudflare Global API Key: " CF_KEY
+     echo ""
+fi
+
 set -euo pipefail
 IP=$(curl -sS ifconfig.me);
 echo "Updating DNS for ${SUB_DOMAIN}..."
