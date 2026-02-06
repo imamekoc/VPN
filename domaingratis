@@ -12,17 +12,40 @@ echo -e "jangan karakter singkat seperti: sg, id, hk,"
 echo -e "kalau bisa 1 kata yang unik dengan dikombinasikan dengan angka"
 echo -e "contoh: resa11"
 echo -e ""
-echo -e "\e[32msubdomain\e[0m.andriwrt.me"
 read -p "Mau subdomain apa?( 1kata ) : " sub
 if [[ $sub == "" ]]; then
 clear
 echo -e "${EROR} No Input Detected !"
 exit 1
 fi
-DOMAIN=andriwrt.me
-SUB_DOMAIN=${sub}.andriwrt.me
-CF_ID=razertech52@gmail.com
-CF_KEY=8b0683c1ff3f6eed8dc32a70dfd2c02c80e9f
+
+# Sentinel Fix: Removed hardcoded secrets and domain. Added prompts.
+if [[ -z "${DOMAIN:-}" ]]; then
+    read -p "Masukkan Domain (contoh: mydomain.com): " DOMAIN
+fi
+if [[ -z "${DOMAIN:-}" ]]; then
+    echo "Error: Domain tidak boleh kosong"
+    exit 1
+fi
+
+if [[ -z "${CF_ID:-}" ]]; then
+    read -p "Masukkan Email Cloudflare: " CF_ID
+fi
+if [[ -z "${CF_ID:-}" ]]; then
+    echo "Error: Email tidak boleh kosong"
+    exit 1
+fi
+
+if [[ -z "${CF_KEY:-}" ]]; then
+    read -s -p "Masukkan Cloudflare Global API Key: " CF_KEY
+    echo ""
+fi
+if [[ -z "${CF_KEY:-}" ]]; then
+    echo "Error: API Key tidak boleh kosong"
+    exit 1
+fi
+
+SUB_DOMAIN=${sub}.${DOMAIN}
 set -euo pipefail
 IP=$(curl -sS ifconfig.me);
 echo "Updating DNS for ${SUB_DOMAIN}..."
